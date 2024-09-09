@@ -1,0 +1,16 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/scrapper.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/download",
+        "dest": "/api/scrapper.js"
+      }
+    ]
+  }
+  

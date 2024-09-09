@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>TikTok Video Downloader</h2>
+    <p>Enter the TikTok video URL:</p>
+    <input type="text" id="tiktokUrl" placeholder="Enter TikTok URL">
+    <button onclick="downloadVideo()">Download Video</button>
+
+    <div class="result" id="result"></div>
+    <div class="error" id="error"></div>
+</div>
+
+<script>
+    function downloadVideo() {
+        const url = document.getElementById("tiktokUrl").value;
+        const resultDiv = document.getElementById("result");
+        const errorDiv = document.getElementById("error");
+
+        // Reset result and error div
+        resultDiv.innerHTML = '';
+        errorDiv.innerHTML = '';
+
+        if (!url) {
+            errorDiv.innerHTML = 'Please enter a valid TikTok URL.';
+            return;
+        }
+
+        fetch(`/download?url=${encodeURIComponent(url)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.videoUrl) {
+                    resultDiv.innerHTML = `<p><strong>Video URL:</strong> <a href="${data.videoUrl}" target="_blank">Download Here</a></p>`;
+                } else {
+                    errorDiv.innerHTML = 'Error fetching video. Please try again.';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                errorDiv.innerHTML = 'An error occurred while fetching the video.';
+            });
+    }
+</script>
+
+</body>
+</html>
